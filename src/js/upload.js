@@ -66,15 +66,6 @@
     var randomImageNumber = Math.round(Math.random() * (images.length - 1));
     backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
   };
-
-  /**
-   * Проверяет, валидны ли данные, в форме кадрирования.
-   * @return {boolean}
-   */
-  var resizeFormIsValid = function() {
-    return true;
-  };
-
   /**
    * Форма загрузки изображения.
    * @type {HTMLFormElement}
@@ -102,6 +93,36 @@
    * @type {HTMLElement}
    */
   var uploadMessage = document.querySelector('.upload-message');
+
+  var sizeLeft = resizeForm['x'];
+  var sizeTop = resizeForm['y'];
+  var sizeLength = resizeForm['size'];
+  var buttonSubmitState = resizeForm['fwd'];
+  /**
+   * Проверяет, валидны ли данные, в форме кадрирования.
+   * @return {boolean}
+   */
+  var resizeFormIsValid = function() {
+    var sizeLeftValue = Number(sizeLeft.value);
+    var sizeTopValue = Number(sizeTop.value);
+    var sizeLengthValue = Number(sizeLength.value);
+
+    var isLeftLengthSumValid = sizeLeftValue + sizeLengthValue <= currentResizer._image.naturalWidth;
+    var isTopLengthSumValid = sizeTopValue + sizeLengthValue <= currentResizer._image.naturalHeight;
+    var isSizeTopValueValid = sizeTopValue >= 0;
+    var isSizeLeftValueValid = sizeLeftValue >= 0;
+    var isSizeLengthValueValid = sizeLengthValue >= 0;
+
+    return (isSizeLeftValueValid && isSizeTopValueValid && isSizeLengthValueValid && isLeftLengthSumValid && isTopLengthSumValid);
+  };
+
+  var toggleSubmitButton = function() {
+    buttonSubmitState.disabled = !resizeFormIsValid();
+  };
+
+  sizeLeft.oninput = toggleSubmitButton;
+  sizeTop.oninput = toggleSubmitButton;
+  sizeLength.oninput = toggleSubmitButton;
 
   /**
    * @param {Action} action
@@ -169,7 +190,6 @@
       }
     }
   };
-
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
