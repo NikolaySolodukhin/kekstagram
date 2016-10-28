@@ -225,6 +225,9 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+
+      var filterCookie = window.Cookies.get('upload-filter') || 'none';
+      document.getElementById('upload-filter-' + filterCookie).click();
     }
   };
 
@@ -253,6 +256,19 @@
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+  var calcCookieExpDate = function() {
+
+    var currentDate = new Date();
+    var GraceBDay = new Date(currentDate.getFullYear(), 11, 9);
+
+    if (GraceBDay > currentDate) {
+      GraceBDay.setFullYear(GraceBDay.getFullYear() - 1);
+    }
+
+    var diffInDays = Math.floor(currentDate - GraceBDay) / (1000 * 3600 * 24);
+    return diffInDays;
+  };
+
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
@@ -274,6 +290,10 @@
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
+
+    window.Cookies.set('upload-filter', selectedFilter, {
+      expires: calcCookieExpDate()
+    });
 
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
