@@ -2,6 +2,7 @@
 
 var load = require('./load');
 var createPicture = require('./picture');
+var gallery = require('./gallery');
 
 var filters = document.querySelector('.filters');
 var picturesContainer = document.querySelector('.pictures');
@@ -22,9 +23,10 @@ function showPictures(picturesAll) {
 
   var picturesContainerAll = document.createDocumentFragment();
 
-  picturesAll.forEach(function(pictureData) {
-    picturesContainerAll.appendChild(createPicture(pictureData));
+  picturesAll.forEach(function(pictureData, number) {
+    picturesContainerAll.appendChild(createPicture(pictureData, number));
   });
 
   picturesContainer.appendChild(picturesContainerAll);
+  gallery.setPictures(picturesAll);
 }

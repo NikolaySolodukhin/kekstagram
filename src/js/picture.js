@@ -1,4 +1,7 @@
 'use strict';
+
+var gallery = require('./gallery');
+
 /**
  * Создает блок картинки и записывает лайки и комментарии и урлы картинки
  * @param {object} pictureData
@@ -10,11 +13,16 @@
  * @return {HTMLElement} DOM элемент щаблонизированной картинки
  */
 
-module.exports = function createPicture(pictureData) {
+var createPicture = function(pictureData, number) {
   var template = document.getElementById('picture-template');
   var templateContainer = 'content' in template ? template.content : template;
   var newImg = new Image();
   var picture = templateContainer.querySelector('.picture').cloneNode(true);
+
+  picture.onclick = function(evt) {
+    evt.preventDefault();
+    gallery.show(number);
+  };
 
   newImg.onload = function() {
     var pictureImg = picture.querySelector('img');
@@ -33,3 +41,4 @@ module.exports = function createPicture(pictureData) {
 
   return picture;
 };
+module.exports = createPicture;
