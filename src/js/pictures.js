@@ -1,7 +1,7 @@
 'use strict';
 
 var load = require('./load');
-var createPicture = require('./picture');
+var Picture = require('./picture');
 var gallery = require('./gallery');
 
 var filters = document.querySelector('.filters');
@@ -24,7 +24,7 @@ function showPictures(picturesAll) {
   var picturesContainerAll = document.createDocumentFragment();
 
   picturesAll.forEach(function(pictureData, number) {
-    picturesContainerAll.appendChild(createPicture(pictureData, number));
+    picturesContainerAll.appendChild(new Picture(pictureData, number).element);
   });
 
   picturesContainer.appendChild(picturesContainerAll);
