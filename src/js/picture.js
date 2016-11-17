@@ -17,6 +17,7 @@ var Picture = function(pictureData, number) {
   var newImg = new Image();
   var picture = templateContainer.querySelector('.picture').cloneNode(true);
   this.data = pictureData;
+  this.element = picture;
   this.element.onclick = function(event) {
     gallery.show(number);
     event.preventDefault();
