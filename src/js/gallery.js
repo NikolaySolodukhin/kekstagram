@@ -4,7 +4,6 @@
  * @constructor
  */
 var Gallery = function() {
-  this.pictures = [];
   this.activePicture = 0;
   this.overlay = document.querySelector('.gallery-overlay');
   this.overlayClose = document.querySelector('.gallery-overlay-close');
@@ -13,6 +12,10 @@ var Gallery = function() {
 
 Gallery.prototype.setPictures = function(arrayData) {
   this.pictures = arrayData;
+};
+
+Gallery.prototype.clearPictures = function() {
+  this.pictures = [];
 };
 
 Gallery.prototype.show = function(number) {

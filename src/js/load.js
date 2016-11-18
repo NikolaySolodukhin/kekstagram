@@ -1,22 +1,27 @@
 'use strict';
-
 /**
- * Делает JSONP запрос к серверу и отдает данные в callback
+ *Формирует get  параметры для XMLHttp запроса
+ * @param {object} params
+ * @returns {string}
+ */
+function getSearchString(params) {
+  return Object.keys(params).map(function(param) {
+    return [param, params[param]].join('=');
+  }).join('&');
+}
+/**
+ *Делает XMLHttp запрос к серверу и отдает данные в callback
  * @param {string} url
+ * @param {object} params
  * @param {function} callback
  */
-
-module.exports = function load(url, callback) {
-
-  var callbackName = 'JSONPRequest';
-
-  window[callbackName] = function(data) {
-    callback(data);
-    script.parentNode.removeChild(script);
-    delete window[callbackName];
+var load = function(url, params, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url + '?' + getSearchString(params));
+  xhr.onload = function(evt) {
+    var loadedData = JSON.parse(evt.target.response);
+    callback(loadedData);
   };
-
-  var script = document.createElement('script');
-  script.src = url + '?callback=' + callbackName;
-  document.body.appendChild(script);
+  xhr.send();
 };
+module.exports = load;
