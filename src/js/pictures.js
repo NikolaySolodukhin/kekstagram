@@ -3,6 +3,7 @@
 var load = require('./load');
 var Picture = require('./picture');
 var gallery = require('./gallery');
+var throttle = require('./throttle');
 
 var filters = document.querySelector('.filters');
 var footer = document.querySelector('.footer');
@@ -13,7 +14,7 @@ var PICTURE_LOAD_URL = 'http://localhost:1507/api/pictures';
 var PAGE_SIZE = 12;
 
 /** @constant {number} */
-var THROTTLE_DELAY = 100;
+var THROTTLE_TIMEOUT = 100;
 
 /** @constant {number} */
 var GAP = 180;
@@ -72,20 +73,12 @@ var setFiltersEnabled = function() {
 var isFooterVisible = function() {
   return (footer.getBoundingClientRect().top - window.innerHeight) <= GAP;
 };
+/** Обработчик прокрутки */
+window.addEventListener('scroll', throttle(function() {
+  if (isFooterVisible()) {
+    loadPictures(activeFilter, ++pageNumber);
+  }
+}, THROTTLE_TIMEOUT));
 
-var setScrollEnabled = function() {
-  var lastCall = Date.now();
-
-  /** Обработчик прокрутки */
-  window.addEventListener('scroll', function() {
-    if (Date.now() - lastCall >= THROTTLE_DELAY) {
-      if (isFooterVisible()) {
-        loadPictures(activeFilter, ++pageNumber);
-      }
-      lastCall = Date.now();
-    }
-  });
-};
 loadPictures(DEFAULT_FILTER, pageNumber);
 setFiltersEnabled();
-setScrollEnabled();
