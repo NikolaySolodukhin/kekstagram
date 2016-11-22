@@ -108,35 +108,72 @@ Resizer.prototype = {
     // нужно отрисовать и координаты его верхнего левого угла.
     // Координаты задаются от центра холста.
     this._ctx.drawImage(this._image, displX, displY);
+
     // Отрисовка прямоугольника, обозначающего область изображения после
     // кадрирования. Координаты задаются от центра.
+
     this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
     var coordinatesImage = -this._resizeConstraint.side / 2;
     var sizeImage = this._resizeConstraint.side - this._ctx.lineWidth / 2;
-    this._ctx.strokeRect(
-      coordinatesImage,
-      coordinatesImage,
-      sizeImage,
-      sizeImage);
+
     // Установка начальной точки системы координат в левый угол холста.
     this._ctx.translate(-this._container.width / 2, -this._container.height / 2);
     this._ctx.beginPath();
     this._ctx.rect(0, 0, this._container.width, this._container.height);
+
     // Установка начальной точки системы координат в центре холста.
     this._ctx.translate(this._container.width / 2, this._container.height / 2);
     this._ctx.rect(
       coordinatesImage - 3,
       coordinatesImage - 3,
-      sizeImage + 6,
-      sizeImage + 6);
+      sizeImage + 9,
+      sizeImage + 9);
     this._ctx.closePath();
     this._ctx.fill('evenodd');
+
     // Вывод размера изображения
     this._ctx.font = ('16px sans-serif');
     this._ctx.fillStyle = 'white';
     this._ctx.fillText(
       this._image.naturalWidth + ' × ' + this._image.naturalHeight, -40,
       coordinatesImage - 10);
+
+    this._ctx.translate(-this._resizeConstraint.side / 2, -this._resizeConstraint.side / 2);
+
+    function paintLineCircle(ctx, step, size, xStart, yStart, xEnd, yEnd) {
+      var x = xStart;
+      var y = yStart;
+
+      if (xStart === xEnd) {
+        while (y < yEnd) {
+          paintCircle(ctx, x, y, size);
+          y += step;
+        }
+      }
+
+      if (yStart === yEnd) {
+        while (x < xEnd) {
+          paintCircle(ctx, x, y, size);
+          x += step;
+        }
+      }
+    }
+
+    function paintCircle(ctx, cx, cy, size) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, size, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Сторона области кадрирования и цвет точек
+    var side = this._resizeConstraint.side;
+    this._ctx.fillStyle = '#ffe753';
+    paintLineCircle(this._ctx, 14, 3, 0, 0, 0, side);
+    paintLineCircle(this._ctx, 14, 3, side, 0, side, side);
+    paintLineCircle(this._ctx, 14, 3, 0, 0, side, 0);
+    paintLineCircle(this._ctx, 14, 3, 5, side, side, side);
+
     // Восстановление состояния канваса, которое было до вызова ctx.save
     // и последующего изменения системы координат. Нужно для того, чтобы
     // следующий кадр рисовался с привычной системой координат, где точка
