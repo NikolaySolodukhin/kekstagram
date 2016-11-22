@@ -112,22 +112,25 @@ Resizer.prototype = {
     // Отрисовка прямоугольника, обозначающего область изображения после
     // кадрирования. Координаты задаются от центра.
 
-    this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-    var coordinatesImage = -this._resizeConstraint.side / 2;
+    var coordinatesImage = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
     var sizeImage = this._resizeConstraint.side - this._ctx.lineWidth / 2;
-
+    var coordinatesImageLeft = coordinatesImage + 8;
+    var coordinatesImageTop = coordinatesImage + 22;
+    var sizeImageRight = sizeImage - 8;
+    var sizeImageBottom = sizeImage - 35;
     // Установка начальной точки системы координат в левый угол холста.
     this._ctx.translate(-this._container.width / 2, -this._container.height / 2);
     this._ctx.beginPath();
     this._ctx.rect(0, 0, this._container.width, this._container.height);
+    this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
 
     // Установка начальной точки системы координат в центре холста.
     this._ctx.translate(this._container.width / 2, this._container.height / 2);
     this._ctx.rect(
-      coordinatesImage - 3,
-      coordinatesImage - 3,
-      sizeImage + 9,
-      sizeImage + 9);
+      coordinatesImageLeft,
+      coordinatesImageTop,
+      sizeImageRight,
+      sizeImageBottom);
     this._ctx.closePath();
     this._ctx.fill('evenodd');
 
@@ -140,39 +143,79 @@ Resizer.prototype = {
 
     this._ctx.translate(-this._resizeConstraint.side / 2, -this._resizeConstraint.side / 2);
 
-    function paintLineCircle(ctx, step, size, xStart, yStart, xEnd, yEnd) {
+    // Ширина, цвет и максимальный размер зига.
+    this._ctx.lineWidth = 6;
+    this._ctx.lineCap = 'round'; // чтобы стыки зигов были плавные
+    this._ctx.strokeStyle = '#ffe753';
+    var zigMax = 20;
+
+     // Сторона области кадрирования
+    var side = this._resizeConstraint.side;
+
+    // Находит точный размер зига, чтобы они заполняли сторону рамки без остатка.
+
+    function findZig(zigM, dividedSide) {
+      while (dividedSide > zigM) {
+        dividedSide = dividedSide / 2;
+      }
+      return dividedSide;
+    }
+
+    var zig = findZig(zigMax, side);
+    function paintZigLine(ctx, xStart, yStart, xEnd, yEnd) {
       var x = xStart;
       var y = yStart;
 
-      if (xStart === xEnd) {
-        while (y < yEnd) {
-          paintCircle(ctx, x, y, size);
-          y += step;
-        }
-      }
-
-      if (yStart === yEnd) {
+      if (yStart === yEnd && yStart === 0) {
         while (x < xEnd) {
-          paintCircle(ctx, x, y, size);
-          x += step;
+          paintZag(ctx, x, y);
+          paintZig(ctx, x, y);
+          x += zig * 2;
+        }
+      }
+
+      if (xStart === xEnd && xStart === side) {
+        while (y < yEnd) {
+          paintZag(ctx, x, y);
+          paintZig(ctx, x - zig, y + zig);
+          y += zig * 2;
+        }
+      }
+
+      if (yStart === yEnd && yStart === side) {
+        while (x < xEnd) {
+          paintZig(ctx, x - zig, y - zig);
+          paintZag(ctx, x + zig, y - zig);
+          x += zig * 2;
+        }
+      }
+
+      if (xStart === xEnd && xStart === 0) {
+        while (y < yEnd) {
+          paintZig(ctx, x - zig * 2, y);
+          paintZag(ctx, x - zig, y + zig);
+          y += zig * 2;
         }
       }
     }
 
-    function paintCircle(ctx, cx, cy, size) {
+    function paintZig(ctx, x, y) {
       ctx.beginPath();
-      ctx.arc(cx, cy, size, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(x + zig, y + zig);
+      ctx.lineTo(x + zig * 2, y);
+      ctx.stroke();
+    }
+    function paintZag(ctx, x, y) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + zig, y + zig);
+      ctx.stroke();
     }
 
-    // Сторона области кадрирования и цвет точек
-    var side = this._resizeConstraint.side;
-    this._ctx.fillStyle = '#ffe753';
-    paintLineCircle(this._ctx, 14, 3, 0, 0, 0, side);
-    paintLineCircle(this._ctx, 14, 3, side, 0, side, side);
-    paintLineCircle(this._ctx, 14, 3, 0, 0, side, 0);
-    paintLineCircle(this._ctx, 14, 3, 5, side, side, side);
+    paintZigLine(this._ctx, 0, 0, side, 0);
+    paintZigLine(this._ctx, side, 0, side, side);
+    paintZigLine(this._ctx, 0, side, side, side);
+    paintZigLine(this._ctx, 0, 0, 0, side);
 
     // Восстановление состояния канваса, которое было до вызова ctx.save
     // и последующего изменения системы координат. Нужно для того, чтобы

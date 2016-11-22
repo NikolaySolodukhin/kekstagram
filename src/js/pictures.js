@@ -48,7 +48,6 @@ var loadPictures = function(filter, currentPage) {
 function showPictures(picturesAll) {
 
   var picturesContainerAll = document.createDocumentFragment();
-
   picturesAll.forEach(function(pictureData, number) {
     picturesContainerAll.appendChild(new Picture(pictureData, number).element);
   });
