@@ -145,23 +145,23 @@ Resizer.prototype = {
 
     // Ширина, цвет и максимальный размер зига.
     this._ctx.lineWidth = 6;
-    this._ctx.lineCap = 'round'; // чтобы стыки зигов были плавные
+    this._ctx.lineCap = 'round';
     this._ctx.strokeStyle = '#ffe753';
-    var zigMax = 20;
+    var zigM = 20;
 
      // Сторона области кадрирования
     var side = this._resizeConstraint.side;
 
     // Находит точный размер зига, чтобы они заполняли сторону рамки без остатка.
 
-    function findZig(zigM, dividedSide) {
-      while (dividedSide > zigM) {
-        dividedSide = dividedSide / 2;
+    function findZig(zigZ, separatedSide) {
+      while (separatedSide > zigZ) {
+        separatedSide = separatedSide / 2;
       }
-      return dividedSide;
+      return separatedSide;
     }
 
-    var zig = findZig(zigMax, side);
+    var zig = findZig(zigM, side);
     function paintZigLine(ctx, xStart, yStart, xEnd, yEnd) {
       var x = xStart;
       var y = yStart;
