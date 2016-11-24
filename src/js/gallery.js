@@ -5,13 +5,14 @@
  */
 var Gallery = function() {
   this.activePicture = 0;
+  this.allPictures = [];
   this.overlay = document.querySelector('.gallery-overlay');
   this.overlayClose = document.querySelector('.gallery-overlay-close');
   this.overlayImage = document.querySelector('.gallery-overlay-image');
 };
 
 Gallery.prototype.setPictures = function(arrayData) {
-  this.pictures = arrayData;
+  this.allPictures = this.allPictures.concat(arrayData);
 };
 
 Gallery.prototype.clearPictures = function() {
@@ -24,7 +25,7 @@ Gallery.prototype.show = function(number) {
     self.hide();
   };
   this.overlayImage.onclick = function() {
-    self.setActivePicture((self.activePicture + 1) % self.pictures.length);
+    self.setActivePicture((self.activePicture + 1) % self.allPictures.length);
   };
   this.overlay.classList.remove('invisible');
   this.setActivePicture(number);
@@ -40,9 +41,9 @@ Gallery.prototype.setActivePicture = function(number) {
   this.pictureLikes = this.overlay.querySelector('.likes-count');
   this.pictureComments = this.overlay.querySelector('.comments-count');
   this.activePicture = number;
-  this.overlayImage.src = this.pictures[number].url;
-  this.pictureLikes.textContent = this.pictures[number].likes;
-  this.pictureComments.textContent = this.pictures[number].comments;
+  this.overlayImage.src = this.allPictures[number].url;
+  this.pictureLikes.textContent = this.allPictures[number].likes;
+  this.pictureComments.textContent = this.allPictures[number].comments;
 };
 
 module.exports = new Gallery();
