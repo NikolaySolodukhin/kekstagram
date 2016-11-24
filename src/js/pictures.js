@@ -50,6 +50,9 @@ function showPictures(picturesAll) {
   var picturesContainerAll = document.createDocumentFragment();
 
   picturesAll.forEach(function(pictureData, number) {
+    if (gallery.allPictures.length % 2 === 0) {
+      number = gallery.allPictures.length + number;
+    }
     picturesContainerAll.appendChild(new Picture(pictureData, number).element);
   });
 
