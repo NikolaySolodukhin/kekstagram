@@ -16,7 +16,7 @@ Gallery.prototype.setPictures = function(arrayData) {
 };
 
 Gallery.prototype.clearPictures = function() {
-  this.pictures = [];
+  this.allPictures = [];
 };
 
 Gallery.prototype.show = function(number) {
