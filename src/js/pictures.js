@@ -8,7 +8,7 @@ var throttle = require('./throttle');
 var filters = document.querySelector('.filters');
 var footer = document.querySelector('.footer');
 var picturesContainer = document.querySelector('.pictures');
-var PICTURE_LOAD_URL = 'http://localhost:1507/api/pictures';
+var PICTURE_LOAD_URL = '/api/pictures';
 
 /** @constant {number} */
 var PAGE_SIZE = 12;
@@ -23,7 +23,7 @@ var GAP = 180;
 var DEFAULT_FILTER = 'filter-popular';
 
 /** @type {string} */
-var activeFilter = DEFAULT_FILTER;
+var activeFilter = localStorage.getItem('filter') || DEFAULT_FILTER;
 
 /** @type {number} */
 var pageNumber = 0;
@@ -37,7 +37,6 @@ var loadPictures = function(filter, currentPage) {
     filter: filter
   }, function(pictures) {
     showPictures(pictures);
-    filters.classList.remove('hidden');
   });
 };
 /**
@@ -58,6 +57,8 @@ function showPictures(picturesAll) {
 
   picturesContainer.appendChild(picturesContainerAll);
   gallery.setPictures(picturesAll);
+  document.getElementById(activeFilter).checked = true;
+  filters.classList.remove('hidden');
 }
 
 /**  Обработчик кликов по фильтрам */
@@ -68,6 +69,7 @@ var setFiltersEnabled = function() {
       picturesContainer.innerHTML = '';
       pageNumber = 0;
       activeFilter = event.target.id;
+      localStorage.setItem('filter', activeFilter);
       loadPictures(activeFilter, pageNumber);
     }
   }, true);
