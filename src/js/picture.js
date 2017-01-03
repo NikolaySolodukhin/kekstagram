@@ -18,24 +18,24 @@ var Picture = function(pictureData, number) {
   var picture = templateContainer.querySelector('.picture').cloneNode(true);
   this.data = pictureData;
   this.element = picture;
-  this.element.onclick = function(event) {
+  this.element.addEventListener('click', function(event) {
     gallery.show(number);
     event.preventDefault();
-  };
+  });
 
-  newImg.onload = function() {
+  newImg.addEventListener('load', function() {
     var pictureImg = picture.querySelector('img');
     pictureImg.src = newImg.src;
     pictureImg.width = 182;
     pictureImg.height = 182;
     picture.querySelector('.picture-likes').innerHTML = pictureData.likes;
     picture.querySelector('.picture-comments').innerHTML = pictureData.comments;
-  };
+  });
 
   newImg.src = pictureData.preview || pictureData.url;
 
-  newImg.onerror = function() {
+  newImg.addEventListener('error', function() {
     picture.classList.add('picture-load-failure');
-  };
+  });
 };
 module.exports = Picture;

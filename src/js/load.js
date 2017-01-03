@@ -18,10 +18,10 @@ function getSearchString(params) {
 var load = function(url, params, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url + '?' + getSearchString(params));
-  xhr.onload = function(evt) {
+  xhr.addEventListener('load', function(evt) {
     var loadedData = JSON.parse(evt.target.response);
     callback(loadedData);
-  };
+  });
   xhr.send();
 };
 module.exports = load;
