@@ -1,15 +1,15 @@
 {
-  "name": "138404-kekstagram",
+  "name": "kekstagram",
   "version": "0.1.0",
   "private": true,
   "description": "Личный проект «Кекстаграм» от HTML Academy",
   "author": "Nikolay Solodukhin",
   "repository": {
     "type": "git",
-    "url": "git@github.com:htmlacademy-javascript/138404-kekstagram.git"
+    "url": "git@github.com:NikolaySolodukhin/kekstagram.git"
   },
   "bugs": {
-    "url": "https://github.com/htmlacademy-javascript/138404-kekstagram/issues"
+    "url": "https://github.com/NikolaySolodukhin/kekstagram/issues"
   },
   "homepage": "https://github.com/htmlacademy-javascript/138404-kekstagram",
   "devDependencies": {
@@ -35,6 +35,5 @@
   },
   "engines": {
     "node": "^5.11.0"
-  },
-  "openBrowser": false
+  }
 }
