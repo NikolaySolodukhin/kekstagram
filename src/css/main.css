@@ -254,7 +254,7 @@ body {
   font: bold 16px/1.3 "Open Sans";
   vertical-align: middle;
   text-align: center;
-  color: #000000;
+  color: black;
 
   border: none;
   border-radius: 2px;
@@ -292,7 +292,7 @@ body {
 
   font: 14px "Open Sans Condensed";
   font-weight: 700;
-  color: #ffffff;
+  color: white;
   text-transform: uppercase;
 
   cursor: pointer;
@@ -389,7 +389,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 
   font-size: 30px;
   text-align: center;
-  color: #ffffff;
+  color: white;
 
   background: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
@@ -447,7 +447,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
   padding: 0 10px;
 
   line-height: 24px;
-  color: #ffffff;
+  color: white;
 
   background: rgba(0, 0, 0, 0.3);
   border-radius: 2px;
@@ -542,7 +542,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 
   font-size: 45px;
   text-align: center;
-  color: #ffffff;
+  color: white;
 
   cursor: pointer;
 }
@@ -551,7 +551,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
   display: inline-block;
   margin: 30px 0;
 
-  background: #ffffff;
+  background-color: white;
 }
 
 .gallery-overlay-image[src=""] {
@@ -566,7 +566,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 .gallery-overlay-controls {
   font-weight: bold;
   font-size: 14px;
-  color: #000000;
+  color: black;
 }
 
 .gallery-overlay-controls-comments,
@@ -623,7 +623,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 
   font-size: 12px;
   font-family: Roboto, Arial, sans-serif;
-  color: #ffffff;
+  color: white;
 
   border-top: solid 1px #cccccc;
 }
@@ -634,7 +634,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 }
 
 .footer a {
-  color: #ffffff;
+  color: white;
 }
 
 .footer-logo,
