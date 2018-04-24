@@ -32,7 +32,7 @@ var Picture = function(pictureData, number) {
     picture.querySelector('.picture-comments').innerHTML = pictureData.comments;
   });
 
-  newImg.src = pictureData.preview || pictureData.url;
+  newImg.src = pictureData.url;
 
   newImg.addEventListener('error', function() {
     picture.classList.add('picture-load-failure');

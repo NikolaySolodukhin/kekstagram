@@ -1,8 +1,3 @@
-/**
- * @fileoverview
- * @author Igor Alexeenko (o0)
- */
-
 'use strict';
 
 var Resizer = require('./resizer');
