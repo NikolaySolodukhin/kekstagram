@@ -25,19 +25,21 @@ var Resizer = function(image) {
      * @const
      * @type {number}
      */
-    var INITIAL_SIDE_RATIO = 0.75;
+    const INITIAL_SIDE_RATIO = 0.75;
 
     // Размер меньшей стороны изображения.
     var side = Math.min(
       this._container.width * INITIAL_SIDE_RATIO,
-      this._container.height * INITIAL_SIDE_RATIO);
+      this._container.height * INITIAL_SIDE_RATIO
+    );
 
     // Изначально предлагаемое кадрирование — часть по центру с размером в 3/4
     // от размера меньшей стороны.
     this._resizeConstraint = new Square(
       this._container.width / 2 - side / 2,
       this._container.height / 2 - side / 2,
-      side);
+      side
+    );
 
     // Отрисовка изначального состояния канваса.
     this.setConstraint();
@@ -112,14 +114,18 @@ Resizer.prototype = {
     // Отрисовка прямоугольника, обозначающего область изображения после
     // кадрирования. Координаты задаются от центра.
 
-    var coordinatesImage = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+    var coordinatesImage =
+      -this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
     var sizeImage = this._resizeConstraint.side - this._ctx.lineWidth / 2;
     var coordinatesImageLeft = coordinatesImage + 8;
     var coordinatesImageTop = coordinatesImage + 22;
     var sizeImageRight = sizeImage - 8;
     var sizeImageBottom = sizeImage - 35;
     // Установка начальной точки системы координат в левый угол холста.
-    this._ctx.translate(-this._container.width / 2, -this._container.height / 2);
+    this._ctx.translate(
+      -this._container.width / 2,
+      -this._container.height / 2
+    );
     this._ctx.beginPath();
     this._ctx.rect(0, 0, this._container.width, this._container.height);
     this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
@@ -130,18 +136,24 @@ Resizer.prototype = {
       coordinatesImageLeft,
       coordinatesImageTop,
       sizeImageRight,
-      sizeImageBottom);
+      sizeImageBottom
+    );
     this._ctx.closePath();
     this._ctx.fill('evenodd');
 
     // Вывод размера изображения
-    this._ctx.font = ('16px sans-serif');
+    this._ctx.font = '16px sans-serif';
     this._ctx.fillStyle = 'white';
     this._ctx.fillText(
-      this._image.naturalWidth + ' × ' + this._image.naturalHeight, -40,
-      coordinatesImage - 10);
+      this._image.naturalWidth + ' × ' + this._image.naturalHeight,
+      -40,
+      coordinatesImage - 10
+    );
 
-    this._ctx.translate(-this._resizeConstraint.side / 2, -this._resizeConstraint.side / 2);
+    this._ctx.translate(
+      -this._resizeConstraint.side / 2,
+      -this._resizeConstraint.side / 2
+    );
 
     // Ширина, цвет и максимальный размер зига.
     this._ctx.lineWidth = 6;
@@ -149,7 +161,7 @@ Resizer.prototype = {
     this._ctx.strokeStyle = '#ffe753';
     var zigM = 20;
 
-     // Сторона области кадрирования
+    // Сторона области кадрирования
     var side = this._resizeConstraint.side;
 
     // Находит точный размер зига, чтобы они заполняли сторону рамки без остатка.
@@ -205,6 +217,7 @@ Resizer.prototype = {
       ctx.lineTo(x + zig * 2, y);
       ctx.stroke();
     }
+
     function paintZag(ctx, x, y) {
       ctx.beginPath();
       ctx.moveTo(x, y);
@@ -257,9 +270,7 @@ Resizer.prototype = {
    * @private
    */
   updatePosition: function(x, y) {
-    this.moveConstraint(
-      this._cursorPosition.x - x,
-      this._cursorPosition.y - y);
+    this.moveConstraint(this._cursorPosition.x - x, this._cursorPosition.y - y);
     this._cursorPosition = new Coordinate(x, y);
   },
 
@@ -321,7 +332,8 @@ Resizer.prototype = {
     this.setConstraint(
       this._resizeConstraint.x + (deltaX || 0),
       this._resizeConstraint.y + (deltaY || 0),
-      this._resizeConstraint.side + (deltaSide || 0));
+      this._resizeConstraint.side + (deltaSide || 0)
+    );
   },
 
   /**
@@ -342,12 +354,14 @@ Resizer.prototype = {
       this._resizeConstraint.side = side;
     }
 
-    requestAnimationFrame(function() {
-      this.redraw();
-      var resizerChangeEvent = document.createEvent('CustomEvent');
-      resizerChangeEvent.initEvent('resizerchange', false, false);
-      window.dispatchEvent(resizerChangeEvent);
-    }.bind(this));
+    requestAnimationFrame(
+      function() {
+        this.redraw();
+        var resizerChangeEvent = document.createEvent('CustomEvent');
+        resizerChangeEvent.initEvent('resizerchange', false, false);
+        window.dispatchEvent(resizerChangeEvent);
+      }.bind(this)
+    );
   },
 
   /**
@@ -379,11 +393,15 @@ Resizer.prototype = {
     var temporaryCtx = temporaryCanvas.getContext('2d');
     temporaryCanvas.width = this._resizeConstraint.side;
     temporaryCanvas.height = this._resizeConstraint.side;
-    temporaryCtx.drawImage(this._image, -this._resizeConstraint.x, -this._resizeConstraint.y);
+    temporaryCtx.drawImage(
+      this._image,
+      -this._resizeConstraint.x,
+      -this._resizeConstraint.y
+    );
     imageToExport.src = temporaryCanvas.toDataURL('image/png');
 
     return imageToExport;
-  }
+  },
 };
 
 /**
@@ -412,4 +430,4 @@ var Coordinate = function(x, y) {
   this.y = y;
 };
 
-module.exports = Resizer;
+export default Resizer;

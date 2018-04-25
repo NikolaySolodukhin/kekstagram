@@ -1,4 +1,6 @@
 'use strict';
+import './../css/main.css';
 
-require('./pictures');
-require('./upload');
+import './js.cookie';
+import './pictures';
+import './upload';

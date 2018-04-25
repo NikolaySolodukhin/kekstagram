@@ -1,5 +1,1 @@
-bin/server.js
-bin/middleware.config.js
-bin/webpack.config.js
-bin/data/*
-lib/js.cookie.js
+js/js.cookie.js

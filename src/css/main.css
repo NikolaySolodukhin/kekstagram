@@ -3,8 +3,8 @@
   font-family: "Open Sans Condensed";
   font-style: normal;
   src:
-    url("../fonts/opensans-condbold.woff2") format("woff2"),
-    url("../fonts/opensans-condbold.woff") format("woff");
+    url("../assets/fonts/opensans-condbold.woff2") format("woff2"),
+    url("../assets/fonts/opensans-condbold.woff") format("woff");
   font-display: swap;
 }
 
@@ -13,8 +13,8 @@
   font-family: "Open Sans Condensed";
   font-style: normal;
   src:
-    url("../fonts/opensans-condlight.woff2") format("woff2"),
-    url("../fonts/opensans-condlight.woff") format("woff");
+    url("../assets/fonts/opensans-condlight.woff2") format("woff2"),
+    url("../assets/fonts/opensans-condlight.woff") format("woff");
   font-display: swap;
 }
 
@@ -23,8 +23,8 @@
   font-family: "Open Sans";
   font-style: normal;
   src:
-    url("../fonts/opensans.woff2") format("woff2"),
-    url("../fonts/opensans.woff") format("woff");
+    url("../assets/fonts/opensans.woff2") format("woff2"),
+    url("../assets/fonts/opensans.woff") format("woff");
   font-display: swap;
 }
 
@@ -99,7 +99,7 @@ body {
   margin-top: 5px;
   padding: 0;
 
-  background-image: url("../img/logo-background-1.jpg");
+  background-image: url("../assets/img/logo-background-1.jpg");
   background-repeat: no-repeat;
   background-position: center;
   border: 0;
@@ -125,7 +125,7 @@ body {
   position: relative;
   z-index: 1;
 
-  background-image: url("../img/logo-mask.png");
+  background-image: url("../assets/img/logo-mask.png");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -176,7 +176,7 @@ body {
   margin: 0;
   padding: 0;
 
-  background-image: url("../img/icon-photo.png");
+  background-image: url("../assets/img/icon-photo.png");
   background-repeat: no-repeat;
   background-position: center;
   border: none;
@@ -184,7 +184,7 @@ body {
 }
 
 .upload-submit {
-  background-image: url("../img/upload-button.png");
+  background-image: url("../assets/img/upload-button.png");
   background-repeat: no-repeat;
 }
 
@@ -232,7 +232,7 @@ body {
   float: left;
 
   background-color: rgba(255, 255, 255, 0.2);
-  background-image:  url("../img/icon-cross.png");
+  background-image:  url("../assets/img/icon-cross.png");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -241,7 +241,7 @@ body {
   float: right;
 
   background-color: rgba(255, 231, 83, 0.2);
-  background-image: url("../img/icon-arrow.png");
+  background-image: url("../assets/img/icon-arrow.png");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -477,7 +477,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 .picture-load-failure {
   line-height: 182px;
 
-  background-image: url("../img/icon-cross.png");
+  background-image: url("../assets/img/icon-cross.png");
   background-repeat: no-repeat;
   background-position: center;
   border: solid 1px rgba(255, 255, 255, 0.2);
@@ -533,7 +533,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 
   vertical-align: middle;
 
-  background-image: url("../img/image-icons-sprite.png");
+  background-image: url("../assets/img/image-icons-sprite.png");
   background-repeat: no-repeat;
   background-position: 0 0;
 }
@@ -653,7 +653,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
 
   vertical-align: middle;
 
-  background-image: url("../img/icon-heart-sprite.gif");
+  background-image: url("../assets/img/icon-heart-sprite.gif");
   background-repeat: no-repeat;
   background-position: 0 0;
   cursor: pointer;
@@ -727,7 +727,7 @@ input[type=radio]:checked + .upload-filter-label .upload-filter-preview {
   vertical-align: top;
   text-indent: -1999em;
 
-  background-image: url("../img/social-sprite.png");
+  background-image: url("../assets/img/social-sprite.png");
   background-repeat: no-repeat;
   opacity: 0.6;
 }

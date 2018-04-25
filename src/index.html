@@ -7,11 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Nikolay Solodukhin">
-  <link type="font/woff2" href="fonts/opensans-condbold.woff2" rel="preload" as="font" crossorigin="anonymous">
-  <link type="font/woff2" href="fonts/opensans.woff2" rel="preload" as="font" crossorigin="anonymous">
-  <link type="font/woff2" href="fonts/opensans-condlight.woff2" rel="preload" as="font" crossorigin="anonymous">
-  <link href="css/main.css" rel="stylesheet">
-  <script src="lib/js.cookie.js" charset="utf-8"></script>
+  <link type="font/woff2" href="<%= require(`assets/fonts/opensans-condbold.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
+  <link type="font/woff2" href="<%= require(`assets/fonts/opensans.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
+  <link type="font/woff2" href="<%= require(`assets/fonts/opensans-condlight.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
+  <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+  <% } %>
   <title>Кекстаграм</title>
 </head>
 
@@ -104,7 +105,7 @@
       <section class="footer-logo">
         Сделано в
         <a class="footer-logo-link" tabindex="1" href="http://htmlacademy.ru">
-          <img class="footer-logo-image" src="img/ha-logo.png" width="130" alt="HTML Academy"/>HTML Academy</a> &copy; 2018
+          <img class="footer-logo-image" src="<%= require(`assets/img/ha-logo.png`) %>" width="130" alt="HTML Academy" />HTML Academy</a> &copy; 2018
       </section>
       <nav class="footer-social">
         <a class="footer-social-item footer-social-item-twitter" tabindex="1" href="https://twitter.com/htmlacademy_ru" alt="twitter"
@@ -144,7 +145,9 @@
     </a>
   </template>
 
-  <script src="js/main.js" charset="utf-8"></script>
+  <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+  <% } %>
 
 </body>
 

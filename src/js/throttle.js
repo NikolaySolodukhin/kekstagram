@@ -1,8 +1,8 @@
 'use strict';
 
-var throttle = function(throttleFunction, time) {
+const throttle = function(throttleFunction, time) {
   var lastCall = Date.now();
-  return function() {
+  return () => {
     if (Date.now() - lastCall >= time) {
       throttleFunction();
 
@@ -10,4 +10,5 @@ var throttle = function(throttleFunction, time) {
     }
   };
 };
-module.exports = throttle;
+
+export default throttle;

@@ -1,19 +1,20 @@
 'use strict';
 
-var Resizer = require('./resizer');
+import Resizer from './resizer';
+
 /** @enum {string} */
-var FileType = {
-  'GIF': '',
-  'JPEG': '',
-  'PNG': '',
-  'SVG+XML': ''
+const FileType = {
+  GIF: '',
+  JPEG: '',
+  PNG: '',
+  'SVG+XML': '',
 };
 
 /** @enum {number} */
-var Action = {
+const Action = {
   ERROR: 0,
   UPLOADING: 1,
-  CUSTOM: 2
+  CUSTOM: 2,
 };
 
 /**
@@ -21,18 +22,25 @@ var Action = {
  * из ключей FileType.
  * @type {RegExp}
  */
-var fileRegExp = new RegExp('^image/(' + Object.keys(FileType).join('|').replace('\+', '\\+') + ')$', 'i');
+const fileRegExp = new RegExp(
+  '^image/(' +
+    Object.keys(FileType)
+      .join('|')
+      .replace('+', '\\+') +
+    ')$',
+  'i'
+);
 
 /**
  * @type {Object.<string, string>}
  */
-var filterMap;
+let filterMap;
 
 /**
  * Объект, который занимается кадрированием изображения.
  * @type {Resizer}
  */
-var currentResizer;
+let currentResizer;
 
 /**
  * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
@@ -50,14 +58,15 @@ var cleanupResizer = function() {
  */
 var updateBackground = function() {
   var images = [
-    'img/logo-background-1.jpg',
-    'img/logo-background-2.jpg',
-    'img/logo-background-3.jpg'
+    require('../assets/img/logo-background-1.jpg'),
+    require('../assets/img/logo-background-2.jpg'),
+    require('../assets/img/logo-background-3.jpg'),
   ];
 
   var backgroundElement = document.querySelector('.upload');
   var randomImageNumber = Math.round(Math.random() * (images.length - 1));
-  backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
+  backgroundElement.style.backgroundImage =
+    'url(' + images[randomImageNumber] + ')';
 };
 /**
  * Форма загрузки изображения.
@@ -100,13 +109,21 @@ var resizeFormIsValid = function() {
   var sizeTopValue = Number(sizeTop.value);
   var sizeLengthValue = Number(sizeLength.value);
 
-  var isLeftLengthSumValid = sizeLeftValue + sizeLengthValue <= currentResizer._image.naturalWidth;
-  var isTopLengthSumValid = sizeTopValue + sizeLengthValue <= currentResizer._image.naturalHeight;
+  var isLeftLengthSumValid =
+    sizeLeftValue + sizeLengthValue <= currentResizer._image.naturalWidth;
+  var isTopLengthSumValid =
+    sizeTopValue + sizeLengthValue <= currentResizer._image.naturalHeight;
   var isSizeTopValueValid = sizeTopValue >= 0;
   var isSizeLeftValueValid = sizeLeftValue >= 0;
   var isSizeLengthValueValid = sizeLengthValue >= 0;
 
-  return (isSizeLeftValueValid && isSizeTopValueValid && isSizeLengthValueValid && isLeftLengthSumValid && isTopLengthSumValid);
+  return (
+    isSizeLeftValueValid &&
+    isSizeTopValueValid &&
+    isSizeLengthValueValid &&
+    isLeftLengthSumValid &&
+    isTopLengthSumValid
+  );
 };
 
 var toggleSubmitButton = function() {
@@ -132,7 +149,11 @@ var showMessage = function(action, message) {
 
     case Action.ERROR:
       isError = true;
-      message = message || 'Неподдерживаемый формат файла<br> <a href="' + document.location + '">Попробовать еще раз</a>.';
+      message =
+        message ||
+        'Неподдерживаемый формат файла<br> <a href="' +
+          document.location +
+          '">Попробовать еще раз</a>.';
       break;
   }
 
@@ -264,7 +285,6 @@ filterForm.addEventListener('submit', function(evt) {
   uploadForm.classList.remove('invisible');
 });
 var calcCookieExpDate = function() {
-
   var currentDate = new Date();
   var GraceBDay = new Date(currentDate.getFullYear(), 11, 9);
 
@@ -276,7 +296,6 @@ var calcCookieExpDate = function() {
   return diffInDays;
 };
 
-
 /**
  * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
  * выбранному значению в форме.
@@ -287,19 +306,21 @@ filterForm.addEventListener('change', function() {
     // не понадобится прочитать его в первый раз, а после этого запоминается
     // навсегда.
     filterMap = {
-      'none': 'filter-none',
-      'chrome': 'filter-chrome',
-      'sepia': 'filter-sepia',
-      'marvin': 'filter-marvin'
+      none: 'filter-none',
+      chrome: 'filter-chrome',
+      sepia: 'filter-sepia',
+      marvin: 'filter-marvin',
     };
   }
 
-  var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
+  var selectedFilter = [].filter.call(filterForm['upload-filter'], function(
+    item
+  ) {
     return item.checked;
   })[0].value;
 
   window.Cookies.set('upload-filter', selectedFilter, {
-    expires: calcCookieExpDate()
+    expires: calcCookieExpDate(),
   });
 
   // Класс перезаписывается, а не обновляется через classList потому что нужно

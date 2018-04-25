@@ -1,6 +1,6 @@
 'use strict';
 
-var gallery = require('./gallery');
+import gallery from './gallery';
 /**
  * Создает блок картинки и записывает лайки и комментарии и урлы картинки
  * @param {object} pictureData
@@ -12,30 +12,27 @@ var gallery = require('./gallery');
  * @constructor
  */
 var Picture = function(pictureData, number) {
-  var template = document.getElementById('picture-template');
-  var templateContainer = 'content' in template ? template.content : template;
-  var newImg = new Image();
-  var picture = templateContainer.querySelector('.picture').cloneNode(true);
+  const template = document.getElementById('picture-template');
+  const templateContainer = 'content' in template ? template.content : template;
+  let newImg = new Image();
+  let picture = templateContainer.querySelector('.picture').cloneNode(true);
   this.data = pictureData;
   this.element = picture;
-  this.element.addEventListener('click', function(event) {
+  this.element.addEventListener('click', event => {
     gallery.show(number);
     event.preventDefault();
   });
 
-  newImg.addEventListener('load', function() {
-    var pictureImg = picture.querySelector('img');
-    pictureImg.src = newImg.src;
-    pictureImg.width = 182;
-    pictureImg.height = 182;
-    picture.querySelector('.picture-likes').innerHTML = pictureData.likes;
-    picture.querySelector('.picture-comments').innerHTML = pictureData.comments;
-  });
+  let pictureImg = picture.querySelector('img');
+  pictureImg.src = require(`../assets/photos/${number + 1}.jpg`);
+  pictureImg.width = 182;
+  pictureImg.height = 182;
+  picture.querySelector('.picture-likes').innerHTML = pictureData.likes;
+  picture.querySelector('.picture-comments').innerHTML = pictureData.comments;
 
-  newImg.src = pictureData.url;
-
-  newImg.addEventListener('error', function() {
+  newImg.addEventListener('error', () => {
     picture.classList.add('picture-load-failure');
   });
 };
-module.exports = Picture;
+
+export default Picture;
