@@ -8,7 +8,7 @@ import throttle from './throttle';
 const filters = document.querySelector('.filters');
 const footer = document.querySelector('.footer');
 const picturesContainer = document.querySelector('.pictures');
-const PICTURE_LOAD_URL = '/data/data.json';
+const PICTURE_LOAD_URL = 'data/data.json';
 
 /** @constant {number} */
 const PAGE_SIZE = 12;
@@ -17,7 +17,7 @@ const PAGE_SIZE = 12;
 const THROTTLE_TIMEOUT = 100;
 
 /** @constant {number} */
-const GAP = 180;
+const GAP = 100;
 
 /** @constant {string} */
 const DEFAULT_FILTER = 'filter-popular';
@@ -30,7 +30,7 @@ let pageNumber = 0;
 
 filters.classList.add('hidden');
 
-const loadPictures = function(filter, currentPage) {
+const loadPictures = (filter, currentPage) => {
   load(
     PICTURE_LOAD_URL,
     {

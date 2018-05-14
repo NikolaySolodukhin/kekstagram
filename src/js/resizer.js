@@ -1,55 +1,50 @@
 'use strict';
-/**
- * @constructor
- * @param {string} image
- */
-var Resizer = function(image) {
-  // Изображение, с которым будет вестись работа.
-  this._image = new Image();
-  this._image.src = image;
 
-  // Холст.
-  this._container = document.createElement('canvas');
-  this._ctx = this._container.getContext('2d');
+import Coordinate from './coordinate';
+import Square from './square';
 
-  // Создаем холст только после загрузки изображения.
-  this._image.onload = function() {
-    // Размер холста равен размеру загруженного изображения. Это нужно
-    // для удобства работы с координатами.
-    this._container.width = this._image.naturalWidth;
-    this._container.height = this._image.naturalHeight;
-
-    /**
-     * Предлагаемый размер кадра в виде коэффициента относительно меньшей
-     * стороны изображения.
-     * @const
-     * @type {number}
-     */
-    const INITIAL_SIDE_RATIO = 0.75;
-
-    // Размер меньшей стороны изображения.
-    var side = Math.min(
-      this._container.width * INITIAL_SIDE_RATIO,
-      this._container.height * INITIAL_SIDE_RATIO
-    );
-
-    // Изначально предлагаемое кадрирование — часть по центру с размером в 3/4
-    // от размера меньшей стороны.
-    this._resizeConstraint = new Square(
-      this._container.width / 2 - side / 2,
-      this._container.height / 2 - side / 2,
-      side
-    );
-
-    // Отрисовка изначального состояния канваса.
-    this.setConstraint();
-  }.bind(this);
-
-  // Фиксирование контекста обработчиков.
-  this._onDragStart = this._onDragStart.bind(this);
-  this._onDragEnd = this._onDragEnd.bind(this);
-  this._onDrag = this._onDrag.bind(this);
-};
+class Resizer {
+  constructor(image) {
+    // Изображение, с которым будет вестись работа.
+    this._image = new Image();
+    this._image.src = image;
+    // Холст.
+    this._container = document.createElement('canvas');
+    this._ctx = this._container.getContext('2d');
+    // Создаем холст только после загрузки изображения.
+    this._image.onload = function() {
+      // Размер холста равен размеру загруженного изображения. Это нужно
+      // для удобства работы с координатами.
+      this._container.width = this._image.naturalWidth;
+      this._container.height = this._image.naturalHeight;
+      /**
+       * Предлагаемый размер кадра в виде коэффициента относительно меньшей
+       * стороны изображения.
+       * @const
+       * @type {number}
+       */
+      const INITIAL_SIDE_RATIO = 0.75;
+      // Размер меньшей стороны изображения.
+      const side = Math.min(
+        this._container.width * INITIAL_SIDE_RATIO,
+        this._container.height * INITIAL_SIDE_RATIO
+      );
+      // Изначально предлагаемое кадрирование — часть по центру с размером в 3/4
+      // от размера меньшей стороны.
+      this._resizeConstraint = new Square(
+        this._container.width / 2 - side / 2,
+        this._container.height / 2 - side / 2,
+        side
+      );
+      // Отрисовка изначального состояния канваса.
+      this.setConstraint();
+    }.bind(this);
+    // Фиксирование контекста обработчиков.
+    this._onDragStart = this._onDragStart.bind(this);
+    this._onDragEnd = this._onDragEnd.bind(this);
+    this._onDrag = this._onDrag.bind(this);
+  }
+}
 
 Resizer.prototype = {
   /**
@@ -79,7 +74,7 @@ Resizer.prototype = {
   /**
    * Отрисовка канваса.
    */
-  redraw: function() {
+  redraw() {
     // Очистка изображения.
     this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 
@@ -104,8 +99,14 @@ Resizer.prototype = {
     // Установка начальной точки системы координат в центр холста.
     this._ctx.translate(this._container.width / 2, this._container.height / 2);
 
-    var displX = -(this._resizeConstraint.x + this._resizeConstraint.side / 2);
-    var displY = -(this._resizeConstraint.y + this._resizeConstraint.side / 2);
+    const displX = -(
+      this._resizeConstraint.x +
+      this._resizeConstraint.side / 2
+    );
+    const displY = -(
+      this._resizeConstraint.y +
+      this._resizeConstraint.side / 2
+    );
     // Отрисовка изображения на холсте. Параметры задают изображение, которое
     // нужно отрисовать и координаты его верхнего левого угла.
     // Координаты задаются от центра холста.
@@ -114,13 +115,13 @@ Resizer.prototype = {
     // Отрисовка прямоугольника, обозначающего область изображения после
     // кадрирования. Координаты задаются от центра.
 
-    var coordinatesImage =
+    const coordinatesImage =
       -this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
-    var sizeImage = this._resizeConstraint.side - this._ctx.lineWidth / 2;
-    var coordinatesImageLeft = coordinatesImage + 8;
-    var coordinatesImageTop = coordinatesImage + 22;
-    var sizeImageRight = sizeImage - 8;
-    var sizeImageBottom = sizeImage - 35;
+    const sizeImage = this._resizeConstraint.side - this._ctx.lineWidth / 2;
+    const coordinatesImageLeft = coordinatesImage + 8;
+    const coordinatesImageTop = coordinatesImage + 22;
+    const sizeImageRight = sizeImage - 8;
+    const sizeImageBottom = sizeImage - 35;
     // Установка начальной точки системы координат в левый угол холста.
     this._ctx.translate(
       -this._container.width / 2,
@@ -159,10 +160,10 @@ Resizer.prototype = {
     this._ctx.lineWidth = 6;
     this._ctx.lineCap = 'round';
     this._ctx.strokeStyle = '#ffe753';
-    var zigM = 20;
+    const zigM = 20;
 
     // Сторона области кадрирования
-    var side = this._resizeConstraint.side;
+    const side = this._resizeConstraint.side;
 
     // Находит точный размер зига, чтобы они заполняли сторону рамки без остатка.
 
@@ -173,10 +174,10 @@ Resizer.prototype = {
       return separatedSide;
     }
 
-    var zig = findZig(zigM, side);
+    const zig = findZig(zigM, side);
     function paintZigLine(ctx, xStart, yStart, xEnd, yEnd) {
-      var x = xStart;
-      var y = yStart;
+      let x = xStart;
+      let y = yStart;
 
       if (yStart === yEnd && yStart === 0) {
         while (x < xEnd) {
@@ -247,7 +248,7 @@ Resizer.prototype = {
    * @param {number} y
    * @private
    */
-  _enterDragMode: function(x, y) {
+  _enterDragMode(x, y) {
     this._cursorPosition = new Coordinate(x, y);
     document.body.addEventListener('mousemove', this._onDrag);
     document.body.addEventListener('mouseup', this._onDragEnd);
@@ -257,7 +258,7 @@ Resizer.prototype = {
    * Выключение режима перемещения.
    * @private
    */
-  _exitDragMode: function() {
+  _exitDragMode() {
     this._cursorPosition = null;
     document.body.removeEventListener('mousemove', this._onDrag);
     document.body.removeEventListener('mouseup', this._onDragEnd);
@@ -269,7 +270,7 @@ Resizer.prototype = {
    * @param {number} y
    * @private
    */
-  updatePosition: function(x, y) {
+  updatePosition(x, y) {
     this.moveConstraint(this._cursorPosition.x - x, this._cursorPosition.y - y);
     this._cursorPosition = new Coordinate(x, y);
   },
@@ -278,7 +279,7 @@ Resizer.prototype = {
    * @param {MouseEvent} evt
    * @private
    */
-  _onDragStart: function(evt) {
+  _onDragStart(evt) {
     this._enterDragMode(evt.clientX, evt.clientY);
   },
 
@@ -286,7 +287,7 @@ Resizer.prototype = {
    * Обработчик окончания перетаскивания.
    * @private
    */
-  _onDragEnd: function() {
+  _onDragEnd() {
     this._exitDragMode();
   },
 
@@ -295,7 +296,7 @@ Resizer.prototype = {
    * @param {MouseEvent} evt
    * @private
    */
-  _onDrag: function(evt) {
+  _onDrag(evt) {
     this.updatePosition(evt.clientX, evt.clientY);
   },
 
@@ -303,7 +304,7 @@ Resizer.prototype = {
    * Добавление элемента в DOM.
    * @param {Element} element
    */
-  setElement: function(element) {
+  setElement(element) {
     if (this._element === element) {
       return;
     }
@@ -318,7 +319,7 @@ Resizer.prototype = {
    * Возвращает кадрирование элемента.
    * @return {Square}
    */
-  getConstraint: function() {
+  getConstraint() {
     return this._resizeConstraint;
   },
 
@@ -328,7 +329,7 @@ Resizer.prototype = {
    * @param {number} deltaY
    * @param {number} deltaSide
    */
-  moveConstraint: function(deltaX, deltaY, deltaSide) {
+  moveConstraint(deltaX, deltaY, deltaSide) {
     this.setConstraint(
       this._resizeConstraint.x + (deltaX || 0),
       this._resizeConstraint.y + (deltaY || 0),
@@ -341,7 +342,7 @@ Resizer.prototype = {
    * @param {number} y
    * @param {number} side
    */
-  setConstraint: function(x, y, side) {
+  setConstraint(x, y, side) {
     if (typeof x !== 'undefined') {
       this._resizeConstraint.x = x;
     }
@@ -357,7 +358,7 @@ Resizer.prototype = {
     requestAnimationFrame(
       function() {
         this.redraw();
-        var resizerChangeEvent = document.createEvent('CustomEvent');
+        const resizerChangeEvent = document.createEvent('CustomEvent');
         resizerChangeEvent.initEvent('resizerchange', false, false);
         window.dispatchEvent(resizerChangeEvent);
       }.bind(this)
@@ -368,7 +369,7 @@ Resizer.prototype = {
    * Удаление. Убирает контейнер из родительского элемента, убирает
    * все обработчики событий и убирает ссылки.
    */
-  remove: function() {
+  remove() {
     this._element.removeChild(this._container);
 
     this._container.removeEventListener('mousedown', this._onDragStart);
@@ -380,17 +381,17 @@ Resizer.prototype = {
    * картинки в src в формате dataURL.
    * @return {Image}
    */
-  exportImage: function() {
+  exportImage() {
     // Создаем Image, с размерами, указанными при кадрировании.
-    var imageToExport = new Image();
+    let imageToExport = new Image();
 
     // Создается новый canvas, по размерам совпадающий с кадрированным
     // изображением, в него добавляется изображение взятое из канваса
     // с измененными координатами и сохраняется в dataURL, с помощью метода
     // toDataURL. Полученный исходный код, записывается в src у ранее
     // созданного изображения.
-    var temporaryCanvas = document.createElement('canvas');
-    var temporaryCtx = temporaryCanvas.getContext('2d');
+    const temporaryCanvas = document.createElement('canvas');
+    const temporaryCtx = temporaryCanvas.getContext('2d');
     temporaryCanvas.width = this._resizeConstraint.side;
     temporaryCanvas.height = this._resizeConstraint.side;
     temporaryCtx.drawImage(
@@ -402,32 +403,6 @@ Resizer.prototype = {
 
     return imageToExport;
   },
-};
-
-/**
- * Вспомогательный тип, описывающий квадрат.
- * @constructor
- * @param {number} x
- * @param {number} y
- * @param {number} side
- * @private
- */
-var Square = function(x, y, side) {
-  this.x = x;
-  this.y = y;
-  this.side = side;
-};
-
-/**
- * Вспомогательный тип, описывающий координату.
- * @constructor
- * @param {number} x
- * @param {number} y
- * @private
- */
-var Coordinate = function(x, y) {
-  this.x = x;
-  this.y = y;
 };
 
 export default Resizer;

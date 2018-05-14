@@ -1,6 +1,5 @@
 'use strict';
 import './../css/main.css';
-
-import './js.cookie';
+import './polyfills';
 import './pictures';
 import './upload';

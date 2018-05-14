@@ -14,11 +14,11 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CssoWebpackPlugin = require('csso-webpack-plugin').default;
+const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin;
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    vendor: 'js/polyfills.js',
     app: 'js/main.js',
   },
   output: {
@@ -58,28 +58,25 @@ module.exports = {
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     new InterpolateHtmlPlugin({ PUBLIC_URL }),
     // HTML pages
-    ...['index.html'].map(
-      page =>
-        new HtmlWebpackPlugin({
-          template: page,
-          filename: page,
-          inject: false,
-          minify: PROD
-            ? {
-                removeComments: true,
-                collapseWhitespace: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true,
-              }
-            : false,
-        })
-    ),
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      filename: 'index.html',
+      inject: false,
+      minify: PROD
+        ? {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            useShortDoctype: true,
+            removeEmptyAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            keepClosingSlash: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true,
+          }
+        : false,
+    }),
     // Extract vendor from app entry
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -142,6 +139,13 @@ module.exports = {
             structureMinimazation: true,
             comments: false,
           }),
+          new CriticalPlugin({
+            src: 'index.html',
+            inline: true,
+            minify: true,
+            dest: 'index.html',
+            ignore: ['@font-face', /url\(/],
+          }),
         ]
       : []),
   ],
@@ -197,7 +201,7 @@ module.exports = {
             // by webpacks internal loaders
             exclude: /\.(js|html|json)$/i,
             loader: 'file-loader',
-            options: { name: 'assets/[name].[hash:8].[ext]' },
+            options: { name: '[path][name].[hash:8].[ext]' },
           },
         ],
       },

@@ -1,6 +1,7 @@
 'use strict';
 
 import Resizer from './resizer';
+import * as Cookies from 'js-cookie';
 
 /** @enum {string} */
 const FileType = {
@@ -46,25 +47,26 @@ let currentResizer;
  * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
  * изображением.
  */
-var cleanupResizer = function() {
-  if (currentResizer) {
-    currentResizer.remove();
-    currentResizer = null;
+const cleanupResizer = () => {
+  if (!currentResizer) {
+    return;
   }
+  currentResizer.remove();
+  currentResizer = null;
 };
 
 /**
  * Ставит одну из трех случайных картинок на фон формы загрузки.
  */
-var updateBackground = function() {
-  var images = [
+const updateBackground = () => {
+  const images = [
     require('../assets/img/logo-background-1.jpg'),
     require('../assets/img/logo-background-2.jpg'),
     require('../assets/img/logo-background-3.jpg'),
   ];
 
-  var backgroundElement = document.querySelector('.upload');
-  var randomImageNumber = Math.round(Math.random() * (images.length - 1));
+  const backgroundElement = document.querySelector('.upload');
+  const randomImageNumber = Math.round(Math.random() * (images.length - 1));
   backgroundElement.style.backgroundImage =
     'url(' + images[randomImageNumber] + ')';
 };
@@ -72,50 +74,50 @@ var updateBackground = function() {
  * Форма загрузки изображения.
  * @type {HTMLFormElement}
  */
-var uploadForm = document.forms['upload-select-image'];
+const uploadForm = document.forms['upload-select-image'];
 
 /**
  * Форма кадрирования изображения.
  * @type {HTMLFormElement}
  */
-var resizeForm = document.forms['upload-resize'];
+const resizeForm = document.forms['upload-resize'];
 
 /**
  * Форма добавления фильтра.
  * @type {HTMLFormElement}
  */
-var filterForm = document.forms['upload-filter'];
+const filterForm = document.forms['upload-filter'];
 
 /**
  * @type {HTMLImageElement}
  */
-var filterImage = filterForm.querySelector('.filter-image-preview');
+const filterImage = filterForm.querySelector('.filter-image-preview');
 
 /**
  * @type {HTMLElement}
  */
-var uploadMessage = document.querySelector('.upload-message');
+const uploadMessage = document.querySelector('.upload-message');
 
-var sizeLeft = resizeForm['x'];
-var sizeTop = resizeForm['y'];
-var sizeLength = resizeForm['size'];
-var buttonSubmitState = resizeForm['fwd'];
+const sizeLeft = resizeForm['x'];
+const sizeTop = resizeForm['y'];
+const sizeLength = resizeForm['size'];
+const buttonSubmitState = resizeForm['fwd'];
 /**
  * Проверяет, валидны ли данные, в форме кадрирования.
  * @return {boolean}
  */
-var resizeFormIsValid = function() {
-  var sizeLeftValue = Number(sizeLeft.value);
-  var sizeTopValue = Number(sizeTop.value);
-  var sizeLengthValue = Number(sizeLength.value);
+const resizeFormIsValid = () => {
+  const sizeLeftValue = Number(sizeLeft.value);
+  const sizeTopValue = Number(sizeTop.value);
+  const sizeLengthValue = Number(sizeLength.value);
 
-  var isLeftLengthSumValid =
+  const isLeftLengthSumValid =
     sizeLeftValue + sizeLengthValue <= currentResizer._image.naturalWidth;
-  var isTopLengthSumValid =
+  const isTopLengthSumValid =
     sizeTopValue + sizeLengthValue <= currentResizer._image.naturalHeight;
-  var isSizeTopValueValid = sizeTopValue >= 0;
-  var isSizeLeftValueValid = sizeLeftValue >= 0;
-  var isSizeLengthValueValid = sizeLengthValue >= 0;
+  const isSizeTopValueValid = sizeTopValue >= 0;
+  const isSizeLeftValueValid = sizeLeftValue >= 0;
+  const isSizeLengthValueValid = sizeLengthValue >= 0;
 
   return (
     isSizeLeftValueValid &&
@@ -126,7 +128,7 @@ var resizeFormIsValid = function() {
   );
 };
 
-var toggleSubmitButton = function() {
+const toggleSubmitButton = () => {
   buttonSubmitState.disabled = !resizeFormIsValid();
 };
 
@@ -139,8 +141,8 @@ sizeLength.addEventListener('input', toggleSubmitButton);
  * @param {string=} message
  * @return {Element}
  */
-var showMessage = function(action, message) {
-  var isError = false;
+const showMessage = (action, message) => {
+  let isError = false;
 
   switch (action) {
     case Action.UPLOADING:
@@ -157,13 +159,13 @@ var showMessage = function(action, message) {
       break;
   }
 
-  uploadMessage.querySelector('.upload-message-container').innerHTML = message;
+  uploadMessage.querySelector('.upload-message__container').innerHTML = message;
   uploadMessage.classList.remove('invisible');
   uploadMessage.classList.toggle('upload-message-error', isError);
   return uploadMessage;
 };
 
-var hideMessage = function() {
+const hideMessage = () => {
   uploadMessage.classList.add('invisible');
 };
 
@@ -174,15 +176,15 @@ var hideMessage = function() {
  * и показывается форма кадрирования.
  * @param {Event} evt
  */
-uploadForm.addEventListener('change', function(evt) {
-  var element = evt.target;
+uploadForm.addEventListener('change', evt => {
+  let element = evt.target;
   if (element.id === 'upload-file') {
     // Проверка типа загружаемого файла, тип должен быть изображением
     // одного из форматов: JPEG, PNG, GIF или SVG.
     if (fileRegExp.test(element.files[0].type)) {
-      var fileReader = new FileReader();
+      const fileReader = new FileReader();
       showMessage(Action.UPLOADING);
-      fileReader.addEventListener('load', function() {
+      fileReader.addEventListener('load', () => {
         cleanupResizer();
         currentResizer = new Resizer(fileReader.result);
         currentResizer.setElement(resizeForm);
@@ -206,7 +208,7 @@ uploadForm.addEventListener('change', function(evt) {
  * и обновляет фон.
  * @param {Event} evt
  */
-resizeForm.addEventListener('reset', function(evt) {
+resizeForm.addEventListener('reset', evt => {
   evt.preventDefault();
 
   cleanupResizer();
@@ -216,19 +218,24 @@ resizeForm.addEventListener('reset', function(evt) {
   uploadForm.classList.remove('invisible');
 });
 
-window.addEventListener('resizerchange', function() {
-  if (currentResizer) {
-    sizeLeft.value = Math.round(currentResizer.getConstraint().x);
-    sizeTop.value = Math.round(currentResizer.getConstraint().y);
-    sizeLength.value = Math.round(currentResizer.getConstraint().side);
+window.addEventListener('resizerchange', () => {
+  if (!currentResizer) {
+    return;
   }
+
+  sizeLeft.value = Math.round(currentResizer.getConstraint().x);
+  sizeTop.value = Math.round(currentResizer.getConstraint().y);
+  sizeLength.value = Math.round(currentResizer.getConstraint().side);
 });
 
-var uploadResizeControls = resizeForm.querySelector('.upload-resize-controls');
-uploadResizeControls.addEventListener('input', function() {
-  var valueX = parseInt(sizeLeft.value, 10);
-  var valueY = parseInt(sizeTop.value, 10);
-  var valueSize = parseInt(sizeLength.value, 10);
+const uploadResizeControls = resizeForm.querySelector(
+  '.upload-resize__list-control'
+);
+
+uploadResizeControls.addEventListener('input', () => {
+  const valueX = parseInt(sizeLeft.value, 10);
+  const valueY = parseInt(sizeTop.value, 10);
+  const valueSize = parseInt(sizeLength.value, 10);
 
   currentResizer.setConstraint(valueX, valueY, valueSize);
 });
@@ -238,14 +245,14 @@ uploadResizeControls.addEventListener('input', function() {
  * кропнутое изображение в форму добавления фильтра и показывает ее.
  * @param {Event} evt
  */
-resizeForm.addEventListener('submit', function(evt) {
+resizeForm.addEventListener('submit', evt => {
   evt.preventDefault();
 
   if (resizeFormIsValid()) {
-    var image = currentResizer.exportImage().src;
+    const image = currentResizer.exportImage().src;
 
-    var thumbnails = filterForm.querySelectorAll('.upload-filter-preview');
-    for (var i = 0; i < thumbnails.length; i++) {
+    const thumbnails = filterForm.querySelectorAll('.upload-filter__preview');
+    for (let i = 0; i < thumbnails.length; i++) {
       thumbnails[i].style.backgroundImage = 'url(' + image + ')';
     }
 
@@ -254,7 +261,7 @@ resizeForm.addEventListener('submit', function(evt) {
     resizeForm.classList.add('invisible');
     filterForm.classList.remove('invisible');
 
-    var filterCookie = window.Cookies.get('upload-filter') || 'none';
+    const filterCookie = Cookies.get('upload-filter') || 'none';
     document.getElementById('upload-filter-' + filterCookie).click();
   }
 });
@@ -263,7 +270,7 @@ resizeForm.addEventListener('submit', function(evt) {
  * Сброс формы фильтра. Показывает форму кадрирования.
  * @param {Event} evt
  */
-filterForm.addEventListener('reset', function(evt) {
+filterForm.addEventListener('reset', evt => {
   evt.preventDefault();
 
   filterForm.classList.add('invisible');
@@ -275,7 +282,7 @@ filterForm.addEventListener('reset', function(evt) {
  * записав сохраненный фильтр в cookie.
  * @param {Event} evt
  */
-filterForm.addEventListener('submit', function(evt) {
+filterForm.addEventListener('submit', evt => {
   evt.preventDefault();
 
   cleanupResizer();
@@ -284,15 +291,16 @@ filterForm.addEventListener('submit', function(evt) {
   filterForm.classList.add('invisible');
   uploadForm.classList.remove('invisible');
 });
-var calcCookieExpDate = function() {
-  var currentDate = new Date();
-  var GraceBDay = new Date(currentDate.getFullYear(), 11, 9);
+
+const calcCookieExpDate = () => {
+  const currentDate = new Date();
+  const GraceBDay = new Date(currentDate.getFullYear(), 11, 9);
 
   if (GraceBDay > currentDate) {
     GraceBDay.setFullYear(GraceBDay.getFullYear() - 1);
   }
 
-  var diffInDays = Math.floor(currentDate - GraceBDay) / (1000 * 3600 * 24);
+  const diffInDays = Math.floor(currentDate - GraceBDay) / (1000 * 3600 * 24);
   return diffInDays;
 };
 
@@ -300,7 +308,7 @@ var calcCookieExpDate = function() {
  * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
  * выбранному значению в форме.
  */
-filterForm.addEventListener('change', function() {
+filterForm.addEventListener('change', () => {
   if (!filterMap) {
     // Ленивая инициализация. Объект не создается до тех пор, пока
     // не понадобится прочитать его в первый раз, а после этого запоминается
@@ -313,20 +321,19 @@ filterForm.addEventListener('change', function() {
     };
   }
 
-  var selectedFilter = [].filter.call(filterForm['upload-filter'], function(
-    item
-  ) {
-    return item.checked;
-  })[0].value;
+  const selectedFilter = [].filter.call(
+    filterForm['upload-filter'],
+    item => item.checked
+  )[0].value;
 
-  window.Cookies.set('upload-filter', selectedFilter, {
+  Cookies.set('upload-filter', selectedFilter, {
     expires: calcCookieExpDate(),
   });
 
   // Класс перезаписывается, а не обновляется через classList потому что нужно
   // убрать предыдущий примененный класс. Для этого нужно или запоминать его
   // состояние или просто перезаписывать.
-  filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+  filterImage.className = 'filter-image__preview ' + filterMap[selectedFilter];
 });
 
 cleanupResizer();

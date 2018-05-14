@@ -11,7 +11,7 @@ import createdDataTime from './createdDataTime';
  */
 
 function load(url, parametersFilter, callback) {
-  fetch(`${PUBLIC_URL}${url}`)
+  fetch(url)
     .then(res => res.json())
     .then(data => {
       callback(

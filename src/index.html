@@ -9,9 +9,13 @@
   <meta name="author" content="Nikolay Solodukhin">
   <link type="font/woff2" href="<%= require(`assets/fonts/opensans-condbold.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
   <link type="font/woff2" href="<%= require(`assets/fonts/opensans.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
-  <link type="font/woff2" href="<%= require(`assets/fonts/opensans-condlight.woff2`) %>" rel="preload" as="font" crossorigin="anonymous">
+  <link  href="<%= require(`assets/img/logo-mask.png`) %>" rel="preload" as="image">
+  <link  href="<%= require(`assets/img/icon-photo.png`) %>" rel="preload" as="image">
   <% for (var css in htmlWebpackPlugin.files.css) { %>
     <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+  <% } %>
+  <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <link rel="preload" href="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" as="script">
   <% } %>
   <title>Кекстаграм</title>
 </head>
@@ -19,14 +23,14 @@
 <body class="page">
 
   <form class="filters hidden" action="index.html" method="get" autocomplete="off">
-    <input class="filters-radio" type="radio" id="filter-popular" name="filter" value="popular">
-    <label class="filters-item" for="filter-popular">Популярные</label>
+    <input class="filters__radio" type="radio" id="filter-popular" name="filter" value="popular">
+    <label class="filters__item" for="filter-popular" role="radio" tabindex="0">Популярные</label>
 
-    <input class="filters-radio" type="radio" id="filter-new" name="filter" value="new">
-    <label class="filters-item" for="filter-new">Новые</label>
+    <input class="filters__radio" type="radio" id="filter-new" name="filter" value="new">
+    <label class="filters__item" for="filter-new" role="radio" tabindex="0">Новые</label>
 
-    <input class="filters-radio" type="radio" id="filter-discussed" name="filter" value="discussed">
-    <label class="filters-item" for="filter-discussed">Обсуждаемые</label>
+    <input class="filters__radio" type="radio" id="filter-discussed" name="filter" value="discussed">
+    <label class="filters__item" for="filter-discussed" role="radio" tabindex="0">Обсуждаемые</label>
   </form>
 
   <div class="upload">
@@ -39,20 +43,20 @@
     <form class="upload-form upload-resize invisible" id="upload-resize" method="post" enctype="multipart/form-data">
       <input class="invisible" type="text" name="resize-image-src" id="resize-image-src">
 
-      <fieldset class="upload-resize-controls">
-        <input class="upload-resize-control" type="number" id="resize-x" name="x">
-        <label class="upload-resize-label" for="resize-x">Слева, px</label>
+      <fieldset class="upload-resize__list-control">
+        <input class="upload-resize__item-control" type="number" id="resize-x" name="x">
+        <label class="upload-resize__item-label" for="resize-x">Слева, px</label>
 
-        <input class="upload-resize-control" type="number" id="resize-y" name="y">
-        <label class="upload-resize-label" for="resize-y">Сверху, px</label>
+        <input class="upload-resize__item-control" type="number" id="resize-y" name="y">
+        <label class="upload-resize__item-label" for="resize-y">Сверху, px</label>
 
-        <input class="upload-resize-control" type="number" id="resize-size" name="size">
-        <label class="upload-resize-label" for="resize-size">Сторона, px</label>
+        <input class="upload-resize__item-control" type="number" id="resize-size" name="size">
+        <label class="upload-resize__item-label" for="resize-size">Сторона, px</label>
       </fieldset>
 
-      <fieldset class="upload-form-controls">
-        <button class="upload-form-controls-prev" type="reset" id="resize-prev" name="prev"></button>
-        <button class="upload-form-controls-fwd" type="submit" id="resize-fwd" name="fwd"></button>
+      <fieldset class="upload-form__list-control">
+        <button class="upload-form__item-control upload-form__item-control--prev" type="reset" id="resize-prev" name="prev"></button>
+        <button class="upload-form__item-control upload-form__item-control--fwd" type="submit" id="resize-fwd" name="fwd"></button>
       </fieldset>
     </form>
 
@@ -60,40 +64,40 @@
       <img src="" class="filter-image-preview">
       <input class="invisible" type="text" name="filter-image-src" id="filter-image-src">
 
-      <fieldset class="upload-filter-controls">
-        <input type="radio" name="upload-filter" id="upload-filter-none" value="none" checked>
-        <label class="upload-filter-label" for="upload-filter-none">
-          <div class="upload-filter-preview"></div>
+      <fieldset class="upload-filter__controls">
+        <input class="upload-filter__сontrol" type="radio" name="upload-filter" id="upload-filter-none" value="none" checked>
+        <label class="upload-filter__label" for="upload-filter-none">
+          <div class="upload-filter__preview" role="button" tabindex="1"></div>
           Оригинал
         </label>
 
-        <input type="radio" name="upload-filter" id="upload-filter-chrome" value="chrome">
-        <label class="upload-filter-label upload-filter-label-chrome" for="upload-filter-chrome">
-          <div class="upload-filter-preview"></div>
+        <input class="upload-filter__сontrol" type="radio" name="upload-filter" id="upload-filter-chrome" value="chrome">
+        <label class="upload-filter__label upload-filter__label--chrome" for="upload-filter-chrome">
+          <div class="upload-filter__preview upload-filter__preview--chrome" role="button" tabindex="1"></div>
           Хром
         </label>
 
-        <input type="radio" name="upload-filter" id="upload-filter-sepia" value="sepia">
-        <label class="upload-filter-label upload-filter-label-sepia" for="upload-filter-sepia">
-          <div class="upload-filter-preview"></div>
+        <input class="upload-filter__сontrol" type="radio" name="upload-filter" id="upload-filter-sepia" value="sepia">
+        <label class="upload-filter__label upload-filter__label--sepia" for="upload-filter-sepia">
+          <div class="upload-filter__preview upload-filter__preview--sepia" role="button" tabindex="1"></div>
           Сепия
         </label>
 
-        <input type="radio" name="upload-filter" id="upload-filter-marvin" value="marvin">
-        <label class="upload-filter-label upload-filter-label-marvin" for="upload-filter-marvin">
-          <div class="upload-filter-preview"></div>
+        <input class="upload-filter__сontrol" type="radio" name="upload-filter" id="upload-filter-marvin" value="marvin">
+        <label class="upload-filter__label upload-filter__label--marvin" for="upload-filter-marvin">
+          <div class="upload-filter__preview upload-filter__preview--marvin" role="button" tabindex="1"></div>
           Марвин
         </label>
       </fieldset>
 
-      <fieldset class="upload-form-controls">
-        <button class="upload-form-controls-prev" type="reset" id="filter-prev" name="prev"></button>
-        <button class="upload-form-controls-fwd" type="submit" id="filter-fwd" name="fwd"></button>
+      <fieldset class="upload-form__list-control">
+        <button class="upload-form__item-control upload-form__item-control--prev" type="reset" id="filter-prev" name="prev"></button>
+        <button class="upload-form__item-control upload-form__item-control--fwd" type="submit" id="filter-fwd" name="fwd"></button>
       </fieldset>
     </form>
 
     <div class="upload-message invisible">
-      <div class="upload-message-container"></div>
+      <div class="upload-message__container"></div>
     </div>
   </div>
 
@@ -101,46 +105,46 @@
   </div>
 
   <footer class="footer container">
-    <div class="center-wrapper">
-      <section class="footer-logo">
+    <div class="footer__wrapper">
+      <section class="footer__logo">
         Сделано в
-        <a class="footer-logo-link" tabindex="1" href="http://htmlacademy.ru">
-          <img class="footer-logo-image" src="<%= require(`assets/img/ha-logo.png`) %>" width="130" alt="HTML Academy" />HTML Academy</a> &copy; 2018
+        <a class="footer__logo-link" tabindex="0" href="http://htmlacademy.ru">
+          <img class="footer__logo-image" src="<%= require(`assets/img/ha-logo.png`) %>" width="130" alt="HTML Academy" />HTML Academy</a> &copy; 2018
       </section>
-      <nav class="footer-social">
-        <a class="footer-social-item footer-social-item-twitter" tabindex="1" href="https://twitter.com/htmlacademy_ru" alt="twitter"
-          target="_blank" rel="nofollow">Twitter</a>
-        <a class="footer-social-item footer-social-item-instagram" tabindex="1" href="https://www.instagram.com/htmlacademy/" alt="instagram"
+      <nav class="footer__social social">
+        <a class="social__item social__item--twitter" tabindex="0" href="https://twitter.com/htmlacademy_ru" alt="twitter" target="_blank"
+          rel="nofollow">Twitter</a>
+        <a class="social__item social__item--instagram" tabindex="0" href="https://www.instagram.com/htmlacademy/" alt="instagram"
           target="_blank" rel="nofollow">Instagtam</a>
-        <a class="footer-social-item footer-social-item-facebook" tabindex="1" href="https://www.facebook.com/htmlacademy" alt="facebook"
-          target="_blank" rel="nofollow">Facebook</a>
-        <a class="footer-social-item footer-social-item-vk" tabindex="1" href="https://vk.com/htmlacademy" alt="vk" target="_blank"
-          rel="nofollow">VK</a>
+        <a class="social__item social__item--facebook" tabindex="0" href="https://www.facebook.com/htmlacademy" alt="facebook" target="_blank"
+          rel="nofollow">Facebook</a>
+        <a class="social__item social__item--vk" tabindex="0" href="https://vk.com/htmlacademy" alt="vk" target="_blank" rel="nofollow">VK</a>
       </nav>
     </div>
   </footer>
 
 
   <div class="gallery-overlay invisible">
-    <span class="gallery-overlay-close">&times;</span>
-    <div class="gallery-overlay-preview">
-      <img class="gallery-overlay-image" src="" alt="">
-      <div class="gallery-overlay-controls">
-        <div class="gallery-overlay-controls-like">Нравится
-          <span class="likes-count">0</span>
+    <button type="button" class="gallery-overlay__button gallery-overlay__button--close">&times;</button>
+    <div class="gallery-overlay__preview">
+      <img class="gallery-overlay__image" src="" alt="" tabindex="1">
+      <div class="gallery-overlay__controls">
+        <div class="gallery-overlay__comments comments">
+          <span class="comments__count">125</span> комментариев</div>
+
+        <div class="gallery-overlay__likes likes">Нравится
+          <span class="likes__count">0</span>
         </div>
-        <div class="gallery-overlay-controls-comments">
-          <span class="comments-count">125</span> комментариев</div>
       </div>
     </div>
   </div>
 
   <template id="picture-template">
     <a class="picture" href="">
-      <img class="" src="" width="182" height="182">
-      <span class="picture-stats">
-        <span class="picture-stat picture-comments"></span>
-        <span class="picture-stat picture-likes"></span>
+      <img class="picture__img" src="" width="182" height="182">
+      <span class="picture__stats">
+        <span class="picture__stat picture__stat--comments"></span>
+        <span class="picture__stat picture__stat--likes"></span>
       </span>
     </a>
   </template>

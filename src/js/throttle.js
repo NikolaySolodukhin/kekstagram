@@ -1,7 +1,7 @@
 'use strict';
 
-const throttle = function(throttleFunction, time) {
-  var lastCall = Date.now();
+const throttle = (throttleFunction, time) => {
+  let lastCall = Date.now();
   return () => {
     if (Date.now() - lastCall >= time) {
       throttleFunction();
