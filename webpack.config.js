@@ -14,7 +14,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CssoWebpackPlugin = require('csso-webpack-plugin').default;
-const CriticalPlugin = require('webpack-plugin-critical').CriticalPlugin;
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -77,10 +76,6 @@ module.exports = {
           }
         : false,
     }),
-    // Extract vendor from app entry
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-    }),
     // DEV-only plugins
     ...(DEV
       ? [
@@ -138,13 +133,6 @@ module.exports = {
             forceMediaMerge: true,
             structureMinimazation: true,
             comments: false,
-          }),
-          new CriticalPlugin({
-            src: 'index.html',
-            inline: true,
-            minify: true,
-            dest: 'index.html',
-            ignore: ['@font-face', /url\(/],
           }),
         ]
       : []),

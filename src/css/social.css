@@ -1,0 +1,35 @@
+
+.social__item {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  margin-left: 10px;
+  overflow: hidden;
+
+  list-style: none;
+  font-size: 0;
+  vertical-align: top;
+  text-indent: -1999em;
+
+  background-image: url("../assets/img/social-sprite.png");
+  background-repeat: no-repeat;
+  opacity: 0.6;
+}
+
+.social__item:hover,
+.social__item:focus {
+  outline: none;
+  opacity: 1;
+}
+
+.social__item--instagram {
+  background-position: -28px 0;
+}
+
+.social__item--facebook {
+  background-position: -56px 0;
+}
+
+.social__item--vk {
+  background-position: -84px 0;
+}

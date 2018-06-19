@@ -1,0 +1,23 @@
+.likes__count {
+  cursor: pointer;
+}
+
+.likes__count::before {
+  content: "";
+
+  display: inline-block;
+  width: 18px;
+  height: 15px;
+  margin-right: 5px;
+
+  vertical-align: middle;
+
+  background-image: url("../assets/img/icon-heart-sprite.gif");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+}
+
+.likes-count-liked::before {
+  background-position-x: -18px;
+}

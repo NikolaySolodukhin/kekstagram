@@ -1,0 +1,29 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  min-height: 100%;
+
+  background-color: var(--bg-color-black);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.page {
+  position: relative;
+
+  min-width: 980px;
+  min-height: 900px;
+
+  font-size: 14px;
+  font-family: var(--set-open-sans-font-family);
+  color: var(--color-yellow);
+}

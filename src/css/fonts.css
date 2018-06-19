@@ -1,0 +1,29 @@
+@font-face {
+  font-weight: 700;
+  font-family: "Open Sans Condensed";
+  font-style: normal;
+  src:
+    url("../assets/fonts/opensans-condbold.woff2") format("woff2"),
+    url("../assets/fonts/opensans-condbold.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: "Open Sans Condensed";
+  font-style: normal;
+  src:
+    url("../assets/fonts/opensans-condlight.woff2") format("woff2"),
+    url("../assets/fonts/opensans-condlight.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: "Open Sans";
+  font-style: normal;
+  src:
+    url("../assets/fonts/opensans.woff2") format("woff2"),
+    url("../assets/fonts/opensans.woff") format("woff");
+  font-display: swap;
+}

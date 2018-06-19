@@ -1,5 +1,5 @@
 'use strict';
-import './../css/main.css';
+import './../css/style.css';
 import './polyfills';
 import './pictures';
 import './upload';
